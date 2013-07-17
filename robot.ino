@@ -1,5 +1,4 @@
 
-const int selectorColor = 8;
 const int pwm = 9;
 const int motorDer0 = 10;
 const int motorDer1 = 11;
@@ -23,6 +22,9 @@ const int s4 = A4;
  * LCD D7 pin to digital pin 3
 **/
 
+unsigned int temp[5], mayor[5], check=0,negro[5],gris[5],verde[5],rojo[5],blanco[5];
+
+
 #define ERRORNEGRO	6
 
 #define _negro	0x01
@@ -33,12 +35,24 @@ const int s4 = A4;
 
 
 #include <LiquidCrystal.h>
-#include "funcionEEPROM.h"
+#include <EEPROM.h>
 
 //inicializar lcd
-LiquidCrystal lcd(4, 5, 0, 1, 2, 3);
+LiquidCrystal lcd(4, 5, 0, 1, 2, 3);  
 
-unsigned int temp[5], mayor[5], check=0;
+#include "motor.h"
+#include "funcionEEPROM.h"
+#include "adc.h"
+#include "calibracion.h"
+
+
+void programaSiguePista(){
+  //TODO: make this!!
+}
+
+void programaPruebaCalibracion(){
+  //TODO: make this!!
+}
 
 void setup() {
   pinMode(selectorColor,INPUT);
@@ -48,9 +62,10 @@ void setup() {
   pinMode(motorIzq1,OUTPUT);
   pinMode(selectorPrograma,INPUT);
   pinMode(siguienteEstado,INPUT);
-  pinMode(selectroColor,INPUT);
+  pinMode(selectorColor,INPUT);
   analogWrite(pwm,255);
-    
+  lcd.begin(16, 2);
+  lcd.write("ready!");  
   
 }
 
@@ -58,7 +73,7 @@ void loop() {
   
   int programa = digitalRead(selectorPrograma);
   
-  if(program == 1){
+  if(programa == 1){
     int color = digitalRead(selectorColor);
     if(color== 1) 
         programaCalibraColores(); //rojo
@@ -69,8 +84,16 @@ void loop() {
     cargaColores();
     programaSiguePista();
   }
-  // remplazar por mensage de fin de programa
-  // PORTD = 0x99;
-  while(true);
+  lcd.clear();
+  lcd.write("programa finalizado");
+  
+  while(true){
+    lcd.setCursor(0,1);
+    lcd.write(":)");
+    delay(1000);//waste time
+    lcd.setCursor(0,1);
+    lcd.write(";)");
+    delay(100);
+  };
   
 }
