@@ -23,16 +23,54 @@ const int s4 = A4;
  * LCD D7 pin to digital pin 3
 **/
 
-#include <LiquidCrystal.h>
+#define ERRORNEGRO	6
 
+#define _negro	0x01
+#define _verde	0x02
+#define _gris	0x04
+#define _rojo	0x08
+#define _blanco	0x10
+
+
+#include <LiquidCrystal.h>
+#include "funcionEEPROM.h"
+
+//inicializar lcd
 LiquidCrystal lcd(4, 5, 0, 1, 2, 3);
 
+unsigned int temp[5], mayor[5], check=0;
 
 void setup() {
-  // put your setup code here, to run once
+  pinMode(selectorColor,INPUT);
+  pinMode(motorDer0,OUTPUT);
+  pinMode(motorDer1,OUTPUT);
+  pinMode(motorIzq0,OUTPUT);
+  pinMode(motorIzq1,OUTPUT);
+  pinMode(selectorPrograma,INPUT);
+  pinMode(siguienteEstado,INPUT);
+  pinMode(selectroColor,INPUT);
+  analogWrite(pwm,255);
+    
+  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly: 
+  
+  int programa = digitalRead(selectorPrograma);
+  
+  if(program == 1){
+    int color = digitalRead(selectorColor);
+    if(color== 1) 
+        programaCalibraColores(); //rojo
+    else
+        programaPruebaCalibracion(); // gris
+  }
+  else{
+    cargaColores();
+    programaSiguePista();
+  }
+  // remplazar por mensage de fin de programa
+  // PORTD = 0x99;
+  while(true);
   
 }
