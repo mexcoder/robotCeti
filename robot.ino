@@ -51,8 +51,40 @@ void programaSiguePista(){
 }
 
 void programaPruebaCalibracion(){
-  //TODO: make this!!
-}
+  cargaColores();
+  while(true)
+  {
+    int analog = analogRead(s0);
+    int val = getColorOfValue(analog, 0)
+    lcd.write("1:");
+    lcd.print(val);
+    lcd.write(" ");
+    
+    analog = analogRead(s0);
+    val = getColorOfValue(analog, 0)
+    lcd.write("2:");
+    lcd.print(val);
+    lcd.write(" ");
+    
+    analog = analogRead(s0);
+    val = getColorOfValue(analog, 0)
+    lcd.write("3:");
+    lcd.print(val);
+    lcd.write(" ");
+    
+    analog = analogRead(s0);
+    val = getColorOfValue(analog, 0)
+    lcd.setCursor(0,1);
+    lcd.write("4:");
+    lcd.print(val);
+    lcd.write(" ");
+    
+    analog = analogRead(s0);
+    val = getColorOfValue(analog, 0)
+    lcd.write("5:");
+    lcd.print(val);
+    lcd.write(" ");
+  }
 
 void setup() {
   pinMode(selectorColor,INPUT);
