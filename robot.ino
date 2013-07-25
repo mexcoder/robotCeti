@@ -85,7 +85,7 @@ void programaSiguePista(){
     while(true){
       color = digitalRead(selectorColor);
       leerValores();
-      //modificar la velocidad segun el valor leido por el sensor de enmedio
+      //modificar la velocidad segun el valor leido por el sensor de en medio
       if(vals[2] == _verde)
          vel = 60;
       if(vals[2] == _rojo)
@@ -105,7 +105,7 @@ void programaSiguePista(){
           leerValores();
         
         }while(vals[1] == _negro && vals[0] != _negro);
-     
+         setVelocidad(vel);
       }
       
       else if(vals[0] == _negro && vals[1] != _negro){
@@ -142,7 +142,9 @@ void programaSiguePista(){
             leerValores();
             
           }while(vals[4] != _blanco);
-          do{
+          
+          //ESTA PARTE NO VA PORQUE ESTARIAS REGRESANDO AL PUNTO DE PARTIDA
+          /*do{
             //girar a la XXX parando el motor
             digitalWrite(motorDer0,LOW);  
             digitalWrite(motorDer1,HIGH);
@@ -150,7 +152,7 @@ void programaSiguePista(){
             digitalWrite(motorIzq1,HIGH);
             leerValores();
             
-          }while(vals[4] != _blanco);
+          }while(vals[4] != _blanco);*/
           
           do{
             //avanzar
@@ -195,6 +197,7 @@ void programaSiguePista(){
             leerValores();
             
           }while(vals[0] != _blanco);
+          /*ESTA PARRTE NO VA TAMPOCO POR LO MISMO
           do{
             //girar a la XXX parando el motor
             digitalWrite(motorDer0,HIGH);  
@@ -204,7 +207,7 @@ void programaSiguePista(){
             leerValores();
             
           }while(vals[0] != _blanco);
-          
+          */
           do{
             //avanzar
             digitalWrite(motorDer0,LOW);  
