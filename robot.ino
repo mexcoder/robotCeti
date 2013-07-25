@@ -45,9 +45,192 @@ LiquidCrystal lcd(4, 5, 0, 1, 2, 3);
 #include "adc.h"
 #include "calibracion.h"
 
+int vals[5] = {0,0,0,0,0};
 
+void leerValores(){
+  analog = analogRead(s0);
+      vals[0] = getColorOfValue(analog, 0);
+      analog = analogRead(s1);
+      vals[0] = getColorOfValue(analog, 1);
+      analog = analogRead(s2);
+      vals[0] = getColorOfValue(analog, 2);
+      analog = analogRead(s3);
+      vals[0] = getColorOfValue(analog, 3);
+      analog = analogRead(s3);
+      vals[0] = getColorOfValue(analog, 4);
+      analog = analogRead(s5);
+      vals[5] = getColorOfValue(analog, 5);
+}
 void programaSiguePista(){
-  //TODO: make this!!
+    cargaColores();
+    boolean inicio = false;
+    
+    int analog = 0; 
+
+    setVelocidad(0);
+    
+    //el robot se queda parado hasta que los dos sensores exteriores
+    //se posicionen sobre la linea
+    while(!inicio){
+     leerValores();
+      
+      if(vals[0] == _blanco && vals[5] == _blanco){
+        inicio = true;
+      }
+    
+    }
+    vel = 80;
+    
+    //avanzamos
+    while(true){
+      color = digitalRead(selectorColor);
+      leerValores();
+      //modificar la velocidad segun el valor leido por el sensor de enmedio
+      if(vals[2] == _verde)
+         vel = 60;
+      if(vals[2] == _rojo)
+         vel = 80;
+      setVelocidad(vel);
+      
+      if(vals[4] == _negro && vals[3] != _negro){
+        
+        //disminuir la velocidad para girar
+        setVelocidad(20);
+        //girar a la XXX parando el motor
+        digitalWrite(motorDer0,HIGH);  
+        digitalWrite(motorDer1,HIGH);
+        digitalWrite(motorIzq0,LOW);  
+        digitalWrite(motorIzq1,HIGH);
+        do{
+          leerValores();
+        
+        }while(vals[1] == _negro && vals[0] != _negro);
+     
+      }
+      
+      else if(vals[0] == _negro && vals[1] != _negro){
+        
+        
+        //girar a la XXX parando el motor
+        digitalWrite(motorDer0,LOW);  
+        digitalWrite(motorDer1,HIGH);
+        digitalWrite(motorIzq0,HIGH);  
+        digitalWrite(motorIzq1,HIGH);
+        do{
+          leerValores();
+        
+        }while(vals[3] == _negro && vals[4] != _negro);
+      
+        //restaurar velocidad
+        setVelocidad(vel);
+      }
+      
+      else if((vals[1] == _negro && vals[3] == _negro && vals[4] == _negro ) &&
+             ((color == 1 && vals[2]== _rojo) || (color == 0 && vals[2]== _verde) )){
+
+        boolean done = false;
+        
+        do{
+          //disminuir la velocidad para girar
+          setVelocidad(20);
+          do{
+            //girar a la XXX parando el motor
+            digitalWrite(motorDer0,LOW);  
+            digitalWrite(motorDer1,HIGH);
+            digitalWrite(motorIzq0,HIGH);  
+            digitalWrite(motorIzq1,HIGH);
+            leerValores();
+            
+          }while(vals[4] != _blanco);
+          do{
+            //girar a la XXX parando el motor
+            digitalWrite(motorDer0,LOW);  
+            digitalWrite(motorDer1,HIGH);
+            digitalWrite(motorIzq0,HIGH);  
+            digitalWrite(motorIzq1,HIGH);
+            leerValores();
+            
+          }while(vals[4] != _blanco);
+          
+          do{
+            //avanzar
+            digitalWrite(motorDer0,LOW);  
+            digitalWrite(motorDer1,HIGH);
+            digitalWrite(motorIzq0,LOW);  
+            digitalWrite(motorIzq1,HIGH);
+            leerValores();
+            
+          }while(vals[0] != _blanco);
+          
+          do{
+            //reverza
+            digitalWrite(motorDer0,HIGH);  
+            digitalWrite(motorDer1,LOW);
+            digitalWrite(motorIzq0,HIGH);  
+            digitalWrite(motorIzq1,HIGH);
+            leerValores();
+            
+          }while(vals[0] != _blanco && vals[4] != _blanco);
+          done = true;
+        }while(done == false);
+ 
+        //restaurar velocidad
+        setVelocidad(vel);      
+    }
+    
+    else if((vals[0] == _negro && vals[1] == _negro && vals[3] == _negro ) &&
+             ((color == 0 && vals[2]== _rojo) || (color == 1 && vals[2]== _verde) )){
+
+        boolean done = false;
+        
+        do{
+          //disminuir la velocidad para girar
+          setVelocidad(20);
+          do{
+            //girar a la XXX parando el motor
+            digitalWrite(motorDer0,HIGH);  
+            digitalWrite(motorDer1,HIGH);
+            digitalWrite(motorIzq0,LOW);  
+            digitalWrite(motorIzq1,HIGH);
+            leerValores();
+            
+          }while(vals[0] != _blanco);
+          do{
+            //girar a la XXX parando el motor
+            digitalWrite(motorDer0,HIGH);  
+            digitalWrite(motorDer1,HIGH);
+            digitalWrite(motorIzq0,LOW);  
+            digitalWrite(motorIzq1,HIGH);
+            leerValores();
+            
+          }while(vals[0] != _blanco);
+          
+          do{
+            //avanzar
+            digitalWrite(motorDer0,LOW);  
+            digitalWrite(motorDer1,HIGH);
+            digitalWrite(motorIzq0,LOW);  
+            digitalWrite(motorIzq1,HIGH);
+            leerValores();
+            
+          }while(vals[4] != _blanco);
+          
+          do{
+            //reverza
+            digitalWrite(motorDer0,HIGH);  
+            digitalWrite(motorDer1,HIGH);
+            digitalWrite(motorIzq0,HIGH);  
+            digitalWrite(motorIzq1,LOW);
+            leerValores();
+
+          }while(vals[0] != _blanco && vals[4] != _blanco);
+          done = true;
+          
+        }while(done == false);
+ 
+        //restaurar velocidad
+        setVelocidad(vel);      
+    }
 }
 
 void programaPruebaCalibracion(){
@@ -55,32 +238,32 @@ void programaPruebaCalibracion(){
   while(true)
   {
     int analog = analogRead(s0);
-    int val = getColorOfValue(analog, 0)
+    int val = getColorOfValue(analog, 0);
     lcd.write("1:");
     lcd.print(val);
     lcd.write(" ");
     
     analog = analogRead(s0);
-    val = getColorOfValue(analog, 0)
+    val = getColorOfValue(analog, 0);
     lcd.write("2:");
     lcd.print(val);
     lcd.write(" ");
     
     analog = analogRead(s0);
-    val = getColorOfValue(analog, 0)
+    val = getColorOfValue(analog, 0);
     lcd.write("3:");
     lcd.print(val);
     lcd.write(" ");
     
     analog = analogRead(s0);
-    val = getColorOfValue(analog, 0)
+    val = getColorOfValue(analog, 0);
     lcd.setCursor(0,1);
     lcd.write("4:");
     lcd.print(val);
     lcd.write(" ");
     
     analog = analogRead(s0);
-    val = getColorOfValue(analog, 0)
+    val = getColorOfValue(analog, 0);
     lcd.write("5:");
     lcd.print(val);
     lcd.write(" ");
@@ -95,9 +278,15 @@ void setup() {
   pinMode(selectorPrograma,INPUT);
   pinMode(siguienteEstado,INPUT);
   pinMode(selectorColor,INPUT);
-  analogWrite(pwm,255);
+  setVelocidad(0)
   lcd.begin(16, 2);
-  lcd.write("ready!");  
+  lcd.write("ready!");
+  
+  //poner los motores hacia adelante
+  digitalWrite(motorDer0,LOW);  
+  digitalWrite(motorDer1,HIGH);
+  digitalWrite(motorIzq0,LOW);  
+  digitalWrite(motorIzq1,HIGH);
   
 }
 
@@ -113,8 +302,7 @@ void loop() {
         programaPruebaCalibracion(); // gris
   }
   else{
-    cargaColores();
-    programaSiguePista();
+     programaSiguePista();
   }
   lcd.clear();
   lcd.write("programa finalizado");
