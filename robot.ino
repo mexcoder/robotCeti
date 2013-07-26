@@ -44,11 +44,12 @@ LiquidCrystal lcd(4, 5, 0, 1, 2, 3);
 #include "funcionEEPROM.h"
 #include "adc.h"
 #include "calibracion.h"
+#include "colores.h"
 
 int vals[5] = {0,0,0,0,0};
 
 void leerValores(){
-  analog = analogRead(s0);
+      int analog = analogRead(s0);
       vals[0] = getColorOfValue(analog, 0);
       analog = analogRead(s1);
       vals[0] = getColorOfValue(analog, 1);
@@ -58,8 +59,6 @@ void leerValores(){
       vals[0] = getColorOfValue(analog, 3);
       analog = analogRead(s3);
       vals[0] = getColorOfValue(analog, 4);
-      analog = analogRead(s5);
-      vals[5] = getColorOfValue(analog, 5);
 }
 void programaSiguePista(){
     cargaColores();
@@ -79,12 +78,31 @@ void programaSiguePista(){
       }
     
     }
-    vel = 80;
-    
+    int vel = 80;
+    int colorI = _blanco;
+    int colorD = _blanco;
+    boolean reset = false;
     //avanzamos
     while(true){
-      color = digitalRead(selectorColor);
+      int color = digitalRead(selectorColor);
       leerValores();
+      
+      //guardar el color leido por los sensores
+      if(vals[0]==_gris){
+        colorI = _rojo;
+        colorD = _gris;
+      }
+      else if(vals[4]==_gris){
+        colorI = _gris;
+        ColorD= _rojo;
+      }
+      
+      if(reset == true){
+        colorI = _blanco;
+        colorD = _blanco;
+        reset = false;
+      }
+      
       //modificar la velocidad segun el valor leido por el sensor de en medio
       if(vals[2] == _verde)
          vel = 60;
@@ -126,8 +144,9 @@ void programaSiguePista(){
       }
       
       else if((vals[1] == _negro && vals[3] == _negro && vals[4] == _negro ) &&
-             ((color == 1 && vals[2]== _rojo) || (color == 0 && vals[2]== _verde) )){
+             ((color == 1 && colorD== _rojo) || (color == 0 && colorD== _verde) )){
 
+                reset = true;
         boolean done = false;
         
         do{
@@ -181,8 +200,8 @@ void programaSiguePista(){
     }
     
     else if((vals[0] == _negro && vals[1] == _negro && vals[3] == _negro ) &&
-             ((color == 0 && vals[2]== _rojo) || (color == 1 && vals[2]== _verde) )){
-
+             ((color == 0 && colorI == _rojo) || (color == 1 && colorI == _verde) )){
+        reset = true;
         boolean done = false;
         
         do{
@@ -235,6 +254,7 @@ void programaSiguePista(){
         setVelocidad(vel);      
     }
 }
+}
 
 void programaPruebaCalibracion(){
   cargaColores();
@@ -271,6 +291,7 @@ void programaPruebaCalibracion(){
     lcd.print(val);
     lcd.write(" ");
   }
+}
 
 void setup() {
   pinMode(selectorColor,INPUT);
@@ -281,7 +302,7 @@ void setup() {
   pinMode(selectorPrograma,INPUT);
   pinMode(siguienteEstado,INPUT);
   pinMode(selectorColor,INPUT);
-  setVelocidad(0)
+  setVelocidad(0);
   lcd.begin(16, 2);
   lcd.write("ready!");
   
