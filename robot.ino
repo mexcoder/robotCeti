@@ -57,14 +57,14 @@ void leerValores(){
       vals[0] = getColorOfValue(analog, 2);
       analog = analogRead(s3);
       vals[0] = getColorOfValue(analog, 3);
-      analog = analogRead(s3);
+      analog = analogRead(s4);
       vals[0] = getColorOfValue(analog, 4);
 }
 void programaSiguePista(){
     cargaColores();
     boolean inicio = false;
     
-    int analog = 0; 
+    int analog = 0;
 
     setVelocidad(0);
     
@@ -94,7 +94,7 @@ void programaSiguePista(){
       }
       else if(vals[4]==_gris){
         colorI = _gris;
-        ColorD= _rojo;
+        //ColorD= _rojo;
       }
       
       if(reset == true){

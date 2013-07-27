@@ -5,11 +5,11 @@ void programaCalibraColores(){
         lcd.write("precione boton sig.");
         
         //while((PINB/0x80)== 0){}
-        int val = 0;
+        int val = LOW;
         do{
-          int val = digitalRead(siguienteEstado);
+          val = digitalRead(siguienteEstado);
         }
-        while(val == 0);
+        while(val == LOW);
         
 	setVelocidad(10);
 	lcd.clear();
