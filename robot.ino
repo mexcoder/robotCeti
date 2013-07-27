@@ -306,10 +306,10 @@ void setup() {
   lcd.begin(16, 2);
   lcd.write("ready!");
   
-  //poner los motores hacia adelante
-  digitalWrite(motorDer0,LOW);  
+  //para los motores
+  digitalWrite(motorDer0,HIGH);  
   digitalWrite(motorDer1,HIGH);
-  digitalWrite(motorIzq0,LOW);  
+  digitalWrite(motorIzq0,HIGH);  
   digitalWrite(motorIzq1,HIGH);
   
 }
