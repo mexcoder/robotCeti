@@ -307,9 +307,9 @@ void setup() {
   lcd.write("ready!");
   
   //para los motores
-  digitalWrite(motorDer0,HIGH);  
+  digitalWrite(motorDer0,LOW);  
   digitalWrite(motorDer1,HIGH);
-  digitalWrite(motorIzq0,HIGH);  
+  digitalWrite(motorIzq0,LOW);  
   digitalWrite(motorIzq1,HIGH);
   
 }

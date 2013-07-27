@@ -13,3 +13,4 @@ int getColorOfValue(int value, int pos){
 				}
 	return result;
 }
+
