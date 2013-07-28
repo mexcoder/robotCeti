@@ -25,13 +25,13 @@ const int s4 = A4;
 unsigned int temp[5], mayor[5], check=0,negro[5],gris[5],verde[5],rojo[5],blanco[5];
 
 
-#define ERRORNEGRO	6
+#define ERRORNEGRO	30
 
 #define _negro	0x01
 #define _verde	0x02
-#define _gris	0x04
-#define _rojo	0x08
-#define _blanco	0x10
+#define _gris	0x03
+#define _rojo	0x04
+#define _blanco	0x05
 
 
 #include <LiquidCrystal.h>
@@ -258,6 +258,7 @@ void programaSiguePista(){
 
 void programaPruebaCalibracion(){
   cargaColores();
+  setVelocidad(25);
   while(true)
   {
     int analog = analogRead(s0);

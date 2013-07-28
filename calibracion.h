@@ -1,3 +1,17 @@
+void capturaColor(){
+	/*******Devuelve resultado en Mayor[]*************/
+	for(int i=0; i<5; i++) mayor[i]=0;
+	leerValor();
+	
+	do{
+		check = 0;
+		for(int i=0; i<5; i++){
+			if( temp[i] > mayor[i] ) mayor[i] = temp[i];
+			if( temp[i] > negro[i]-ERRORNEGRO)check = 1;
+		}
+		leerValor();
+	}while(check == 1);
+}
 void programaCalibraColores(){
         lcd.clear();
         lcd.write("Calibracion:");
@@ -11,10 +25,8 @@ void programaCalibraColores(){
         }
         while(val == LOW);
         
-	setVelocidad(10);
-	lcd.clear();
-        lcd.write("boton precionado");
-        
+	setVelocidad(25);
+	
 	leerValor();
 	leerValor();
 	leerValor();
@@ -22,6 +34,10 @@ void programaCalibraColores(){
 	for(int i=0; i<5; i++)
           negro[i] = temp[i]+ERRORNEGRO;
 	
+        lcd.clear();
+        lcd.write("N");
+        
+        
 	while(temp[2]<(negro[2]+ERRORNEGRO)){
           leerValor();
         }
@@ -30,7 +46,10 @@ void programaCalibraColores(){
 	capturaColor();
 	for(int i=0; i<5; i++) verde[i] =  mayor[i];
 	//PORTD = 0x03;//capturado verde
-		
+	lcd.clear();
+        lcd.write("V");
+        
+        
 	while(temp[2]<(negro[2]+ERRORNEGRO)){
           leerValor();
         }
@@ -38,7 +57,10 @@ void programaCalibraColores(){
 	capturaColor();
 	for(int i=0; i<5; i++) gris[i] =  mayor[i];
 	//PORTD = 0x05;
-	
+	lcd.clear();
+        lcd.write("G");
+        
+
 	while(temp[2]<(negro[2]+ERRORNEGRO)){
           leerValor();
         }
@@ -46,7 +68,9 @@ void programaCalibraColores(){
 	capturaColor();
 	for(int i=0; i<5; i++) rojo[i] =  mayor[i];
 	//PORTD = 0x07;
-	
+	lcd.clear();
+        lcd.write("R");
+        
 	while(temp[2]<(negro[2]+ERRORNEGRO)){
           leerValor();
         }
@@ -54,7 +78,9 @@ void programaCalibraColores(){
 	capturaColor();
 	for(int i=0; i<5; i++) blanco[i] =  mayor[i];
 	//PORTD = 0x09;//blanco capturado
-	
+	lcd.clear();
+        lcd.write("B");
+        
 	
 	for(int i=0; i<4; i++){
 	  negro[i]  = negro[i]	+ ((verde[i] - negro[i])*2/5);
@@ -92,6 +118,9 @@ void programaCalibraColores(){
 	
 	guardaColoresEnLaEEPROM();
 	//OCR1A = 1023;//PWM = 255
+        setVelocidad(0);
+        lcd.clear();
+        lcd.write("termine :)");
 	while(1==1){}
 	//DDRB = 0b00000010;
 	
@@ -117,3 +146,5 @@ void programaCalibraColores(){
 */
 
 }
+
+
