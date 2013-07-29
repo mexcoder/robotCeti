@@ -64,7 +64,7 @@ void programaSiguePista(){
     cargaColores();   
     
     lcd.clear();
-    lcd.write("Calibracion:");
+    lcd.write("sigue pista:");
     lcd.setCursor(0,1);
     lcd.write("precione boton sig.");
     
@@ -80,6 +80,7 @@ void programaSiguePista(){
       val = digitalRead(siguienteEstado);
     }
     while(val == LOW);
+    
     int vel = 80;
     int colorI = _blanco;
     int colorD = _blanco;
@@ -256,45 +257,6 @@ void programaSiguePista(){
         setVelocidad(vel);      
     }
 }
-}
-
-void programaPruebaCalibracion(){
-  cargaColores();
-  setVelocidad(25);
-  while(true)
-  {
-    lcd.setCursor(0,0);
-    int analog = analogRead(s0);
-    int val = getColorOfValue(analog, 0);
-    lcd.write("1:");
-    lcd.write(val);
-    lcd.write(" ");
-    
-    analog = analogRead(s1);
-    val = getColorOfValue(analog, 1);
-    lcd.write("2:");
-    lcd.write(val);
-    lcd.write(" ");
-    
-    analog = analogRead(s2);
-    val = getColorOfValue(analog, 2);
-    lcd.write("3:");
-    lcd.write(val);
-    lcd.write(" ");
-    
-    analog = analogRead(s3);
-    val = getColorOfValue(analog, 3);
-    lcd.setCursor(0,1);
-    lcd.write("4:");
-    lcd.write(val);
-    lcd.write(" ");
-    
-    analog = analogRead(s4);
-    val = getColorOfValue(analog, 4);
-    lcd.write("5:");
-    lcd.write(val);
-    lcd.write(" ");
-  }
 }
 
 void setup() {

@@ -89,7 +89,7 @@ void programaCalibraColores(){
 	lcd.clear();
         lcd.write("B");
         
-	
+	/*
 	for(int i=0; i<4; i++){
 	  negro[i]  = negro[i]	+ ((verde[i] - negro[i])*2/5);
 	  verde[i]  = gris[i];
@@ -110,19 +110,19 @@ void programaCalibraColores(){
 	//esto es para que todos me den negro u otra cosa
 	/*******Sensor 2*********************/
 	gris[2] = 0;
-	verde[2] = verde[2] - 5;
+	//verde[2] = verde[2] - 5;
 	/*******Sensor 3*********************/
 	verde[3] = 0;
 	gris[3] = 0;
 	rojo[3] = 0;
 	//esto es para que todos me den negro u otra cosa
 	/*******Sensor 4 - Izquierdo*********/
-	rojo[4]		= gris[4];
-	gris[4]		= verde[4]	- ((verde[4] - negro[4])/2);
+	//rojo[4]		= gris[4];
+	//gris[4]		= verde[4]	- ((verde[4] - negro[4])/2);
 	verde[4]	= 0;
-	int lala = (rojo[4]-gris[4])/4;
-	rojo[4] = rojo[4] - lala;
-	gris[4] = gris[4] + lala;
+	//int lala = (rojo[4]-gris[4])/4;
+	//rojo[4] = rojo[4] - lala;
+	//gris[4] = gris[4] + lala;
 	
 	guardaColoresEnLaEEPROM();
 	//OCR1A = 1023;//PWM = 255
@@ -155,4 +155,53 @@ void programaCalibraColores(){
 
 }
 
+
+void programaPruebaCalibracion(){
+  cargaColores();
+  setVelocidad(25);
+  while(true)
+  {
+    lcd.setCursor(0,0);
+    int analog = analogRead(s0);
+    int val = getColorOfValue(analog, 0);
+    lcd.write("1");
+    lcd.write(val);
+    val = getPorcentageOfValue(analog, 0);
+    lcd.print(val);
+    lcd.write(" ");
+    
+    analog = analogRead(s1);
+    val = getColorOfValue(analog, 1);
+    lcd.write("2");
+    lcd.write(val);
+    val = getPorcentageOfValue(analog, 1);
+    lcd.print(val);
+    lcd.write(" ");
+    
+    analog = analogRead(s2);
+    val = getColorOfValue(analog, 2);
+    lcd.write("3");
+    lcd.write(val);
+    val = getPorcentageOfValue(analog, 2);
+    lcd.print(val);
+    lcd.write(" ");
+    
+    analog = analogRead(s3);
+    val = getColorOfValue(analog, 3);
+    lcd.setCursor(0,1);
+    lcd.write("4");
+    lcd.write(val);
+    val = getPorcentageOfValue(analog, 3);
+    lcd.print(val);
+    lcd.write(" ");
+    
+    analog = analogRead(s4);
+    val = getColorOfValue(analog, 4);
+    lcd.write("5");
+    lcd.write(val);
+    val = getPorcentageOfValue(analog, 4);
+    lcd.print(val);
+    lcd.write(" ");
+  }
+}
 
