@@ -49,6 +49,14 @@ void programaCalibraColores(){
 	lcd.clear();
         lcd.write("V");
         
+        int dif=2000;
+        for(int i=0; i<5; i++){
+          int j = verde[i]-negro[i];
+          if(j<dif)dif = j;
+        }
+        for(int i =0; i<5; i++)
+          negro[i] = negro[i] - ERRORNEGRO + (dif/2);
+        ERRORNEGRO = dif/3;
         
 	while(temp[2]<(negro[2]+ERRORNEGRO)){
           leerValor();

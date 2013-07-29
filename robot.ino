@@ -25,13 +25,13 @@ const int s4 = A4;
 unsigned int temp[5], mayor[5], check=0,negro[5],gris[5],verde[5],rojo[5],blanco[5];
 
 
-#define ERRORNEGRO	30
+unsigned int ERRORNEGRO	= 35;
 
-#define _negro	0x01
-#define _verde	0x02
-#define _gris	0x03
-#define _rojo	0x04
-#define _blanco	0x05
+#define _negro	'N'
+#define _verde	'V'
+#define _gris   'G'
+#define _rojo	'R'
+#define _blanco	'B'
 
 
 #include <LiquidCrystal.h>
@@ -61,8 +61,12 @@ void leerValores(){
       vals[0] = getColorOfValue(analog, 4);
 }
 void programaSiguePista(){
-    cargaColores();
-    boolean inicio = false;
+    cargaColores();   
+    
+    lcd.clear();
+    lcd.write("Calibracion:");
+    lcd.setCursor(0,1);
+    lcd.write("precione boton sig.");
     
     int analog = 0;
 
@@ -70,14 +74,12 @@ void programaSiguePista(){
     
     //el robot se queda parado hasta que los dos sensores exteriores
     //se posicionen sobre la linea
-    while(!inicio){
-     leerValores();
-      
-      if(vals[0] == _blanco && vals[5] == _blanco){
-        inicio = true;
-      }
+    int val = LOW;
     
+    do{
+      val = digitalRead(siguienteEstado);
     }
+    while(val == LOW);
     int vel = 80;
     int colorI = _blanco;
     int colorD = _blanco;
@@ -261,35 +263,36 @@ void programaPruebaCalibracion(){
   setVelocidad(25);
   while(true)
   {
+    lcd.setCursor(0,0);
     int analog = analogRead(s0);
     int val = getColorOfValue(analog, 0);
     lcd.write("1:");
-    lcd.print(val);
+    lcd.write(val);
     lcd.write(" ");
     
-    analog = analogRead(s0);
-    val = getColorOfValue(analog, 0);
+    analog = analogRead(s1);
+    val = getColorOfValue(analog, 1);
     lcd.write("2:");
-    lcd.print(val);
+    lcd.write(val);
     lcd.write(" ");
     
-    analog = analogRead(s0);
-    val = getColorOfValue(analog, 0);
+    analog = analogRead(s2);
+    val = getColorOfValue(analog, 2);
     lcd.write("3:");
-    lcd.print(val);
+    lcd.write(val);
     lcd.write(" ");
     
-    analog = analogRead(s0);
-    val = getColorOfValue(analog, 0);
+    analog = analogRead(s3);
+    val = getColorOfValue(analog, 3);
     lcd.setCursor(0,1);
     lcd.write("4:");
-    lcd.print(val);
+    lcd.write(val);
     lcd.write(" ");
     
-    analog = analogRead(s0);
-    val = getColorOfValue(analog, 0);
+    analog = analogRead(s4);
+    val = getColorOfValue(analog, 4);
     lcd.write("5:");
-    lcd.print(val);
+    lcd.write(val);
     lcd.write(" ");
   }
 }
