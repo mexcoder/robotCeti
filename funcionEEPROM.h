@@ -35,7 +35,17 @@ void guardaColoresEnLaEEPROM(){
 	}
         for(int i=0; i<5; i++){
 		EEPROM.write( location+5+i, (blanco[i]>>8));		
-	}		
+	}
+        location = 0x60;
+	for(int i=0; i<5; i++){
+		EEPROM.write( location+i, errorNegro[i]);		
+	}
+        for(int i=0; i<5; i++){
+		EEPROM.write( location+5+i, (errorNegro[i]>>8));		
+	}
+
+        
+        		
 }
 
 void cargaColores(){
@@ -80,6 +90,16 @@ void cargaColores(){
 	}
         for(int i=0; i<5; i++){
 		blanco[i]+= (EEPROM.read( location+i+5))<<8; 
+	}		
+	
+
+	location = 0x60;
+	for(int i=0; i<5; i++){
+		errorNegro[i]= EEPROM.read( location+i);		
+		 
+	}
+        for(int i=0; i<5; i++){
+		errorNegro[i]+= (EEPROM.read( location+i+5))<<8; 
 	}		
 	
 }

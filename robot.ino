@@ -25,7 +25,7 @@ const int s4 = A4;
 unsigned int temp[5], mayor[5], check=0,negro[5],gris[5],verde[5],rojo[5],blanco[5];
 
 
-unsigned int ERRORNEGRO	= 35;
+unsigned int errorNegro[5];
 
 #define _negro	'N'
 #define _verde	'V'
@@ -54,6 +54,7 @@ void leerValores(){
       vals[2] = getColorOfValue(temp[2], 2);
       vals[3] = getColorOfValue(temp[3], 3);
       vals[4] = getColorOfValue(temp[4], 4);
+      
 }
 void programaSiguePista(){
     cargaColores();   
@@ -189,10 +190,10 @@ void programaSiguePista(){
                     if(temp1)
                     {
                       lcd.clear();
-                      /*message=_derecha;
-                      setVelocidad(vel);*/
+                      message=_derecha;
+                      setVelocidad(vel);
                       //El derecho
-                      while(temp[0]<gris[0] && temp[0]>negro[0]){
+                      /*while(temp[0]<gris[0] && temp[0]>negro[0]){
                         leerValores();
                         giraDerecha();
                       }
@@ -211,7 +212,7 @@ void programaSiguePista(){
                           }
                         }
                         
-                      }
+                      }*/
                     }
                   }
                 }
@@ -232,10 +233,10 @@ void programaSiguePista(){
                   }else{
                     if(temp2)
                     {
-                      /*lcd.clear();
-                      message=_izquierda;*/
+                      lcd.clear();
+                      message=_izquierda;
                       //El izquierdo
-                        while(temp[4]<gris[4] && temp[4]>negro[4]){
+                      /*  while(temp[4]<gris[4] && temp[4]>negro[4]){
                           leerValores();
                           giraIzquierda();
                         }
@@ -253,7 +254,7 @@ void programaSiguePista(){
                                 message = _avanza;
                             }
                           }
-                        }
+                        }*/
                         
                       setVelocidad(vel);
                     }
@@ -352,6 +353,9 @@ void setup() {
   pinMode(selectorPrograma,INPUT);
   pinMode(siguienteEstado,INPUT);
   pinMode(selectorColor,INPUT);
+  for(int i=0; i<5; i++){
+    errorNegro[i]=20;
+  }
   setVelocidad(0);
   lcd.begin(16, 2);
   lcd.write("ready!");

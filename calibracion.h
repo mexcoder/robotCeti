@@ -1,15 +1,24 @@
+void leerValorMostrandoEnLCD(){
+    leerValor();
+    lcd.setCursor(0,1);
+    lcd.print(temp[2]);
+    lcd.write(" N:");
+    lcd.print(negro[2]);
+    lcd.write(".0");
+}
+
 void capturaColor(){
 	/*******Devuelve resultado en Mayor[]*************/
 	for(int i=0; i<5; i++) mayor[i]=0;
-	leerValor();
+	leerValorMostrandoEnLCD();
 	
 	do{
 		check = 0;
 		for(int i=0; i<5; i++){
 			if( temp[i] > mayor[i] ) mayor[i] = temp[i];
-			if( temp[i] > negro[i]-ERRORNEGRO)check = 1;
+			if( temp[i] > negro[i]-(errorNegro[i]/2))check = 1;
 		}
-		leerValor();
+		leerValorMostrandoEnLCD();
 	}while(check == 1);
 }
 int capturaUnColor(int s){
@@ -36,22 +45,29 @@ void programaCalibraColores(){
         
 	setVelocidad(25);
 	
-	leerValor();
-	leerValor();
-	leerValor();
-	
-	for(int i=0; i<5; i++)
-          negro[i] = temp[i]+ERRORNEGRO;
-	
+	leerValorMostrandoEnLCD();
+	leerValorMostrandoEnLCD();
+	leerValorMostrandoEnLCD();
+
+	lcd.clear();
+        lcd.write("n");
+        
+	for(int i=0; i<5; i++){
+          errorNegro[i] = temp[i]*.25;
+          negro[i] = temp[i]+errorNegro[i];
+        }
+        
         lcd.clear();
         lcd.write("N");
         
         
-	while(temp[2]<(negro[2]+ERRORNEGRO)){
-          leerValor();
+	while(temp[2]<(negro[2]+errorNegro[2])){
+          leerValorMostrandoEnLCD();
         }
         
-	//PORTD = 0x02;//capturando verde
+	lcd.clear();
+        lcd.write("v");
+        //PORTD = 0x02;//capturando verde
 	capturaColor();
 	for(int i=0; i<5; i++) verde[i] =  mayor[i];
 	//PORTD = 0x03;//capturado verde
@@ -61,15 +77,17 @@ void programaCalibraColores(){
         int dif=2000;
         for(int i=0; i<5; i++){
           int j = verde[i]-negro[i];
-          if(j<dif)dif = j;
+          negro[i] = negro[i] - errorNegro[i] + (j/2);
+          errorNegro[i] = j/3;
         }
-        for(int i =0; i<5; i++)
-          negro[i] = negro[i] - ERRORNEGRO + (dif/2);
-        ERRORNEGRO = dif/3;
         
-	while(temp[2]<(negro[2]+ERRORNEGRO)){
-          leerValor();
+        
+	while(temp[2]<(negro[2]+errorNegro[2])){
+          leerValorMostrandoEnLCD();
         }
+        
+        lcd.clear();
+        lcd.write("g");
 	//PORTD = 0x04;//capturando gris
 	capturaColor();
 	for(int i=0; i<5; i++) gris[i] =  mayor[i];
@@ -77,10 +95,12 @@ void programaCalibraColores(){
 	lcd.clear();
         lcd.write("G");
         
-
-	while(temp[2]<(negro[2]+ERRORNEGRO)){
-          leerValor();
+	while(temp[2]<(negro[2]+errorNegro[2])){
+          leerValorMostrandoEnLCD();
         }
+        
+        lcd.clear();
+        lcd.write("r");
 	//PORTD = 0x06;//capturando rojo
 	capturaColor();
 	for(int i=0; i<5; i++) rojo[i] =  mayor[i];
@@ -88,9 +108,11 @@ void programaCalibraColores(){
 	lcd.clear();
         lcd.write("R");
         
-	while(temp[2]<(negro[2]+ERRORNEGRO)){
-          leerValor();
+	while(temp[2]<(negro[2]+errorNegro[2])){
+          leerValorMostrandoEnLCD();
         }
+        lcd.clear();
+        lcd.write("b");
 	//PORTD = 0x08;//capturando blanco
 	capturaColor();
 	for(int i=0; i<5; i++) blanco[i] =  mayor[i];
