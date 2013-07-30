@@ -77,6 +77,13 @@ void programaSiguePista(){
     }
     while(val == LOW);
     int vel = 80;
+ 
+    #define _derecha 1
+    #define _izquierda 2
+    #define _avanza 0
+    int direccion = _avanza;
+    int message = _avanza;//este solo muestra los valores de calibracion
+    
     lcd.clear();
     lcd.print("Boton Presionado");
     while(true){
@@ -92,19 +99,24 @@ void programaSiguePista(){
         avanza();
         int lineaCentro = getColorOfValue(capturaUnColor(2),2);
         if(lineaCentro == _verde){
+          lcd.clear();
           lcd.setCursor(0,0);
           lcd.write("Verde 60% Porciento");
           vel = 60;
+          message=60;
         }
         if(lineaCentro == _rojo){
+          lcd.clear();
           lcd.setCursor(0,0); 
           lcd.write("Rojo 80% Porciento");          
           vel = 80;
+          message = 80;
         }
         
         /******Este segmento de codigo se debe de poner mejor para que funcone correctamente
         */
         if(lineaCentro == _blanco){ 
+          lcd.clear();
           lcd.write("Blanco en S3!!! ");
           lcd.setCursor(0,1);
           lcd.write("Adios  :P");
@@ -114,32 +126,115 @@ void programaSiguePista(){
         
         
       }
-      
-      printAllValuesAtLCD();
+      lcd.setCursor(0,0);
+      switch (message){
+        case 60:
+            lcd.write("Velocidad 60%");
+        break;
+        case 80:
+            lcd.write("Velocidad 80%");
+        break;
+        case _izquierda:
+            lcd.write("Vuelta a La Izquierda :D");
+        break;
+        case _derecha:
+            lcd.write("Vuelta a La Derecha D:");
+        break;
+        default:
+            printAllValuesAtLCD();
+        break;
+      }
       setVelocidad(vel);
       if(vals[1]==_negro &&  vals[3]==_negro){
         
         if(getPorcentageOfValue(temp[1],1)<getPorcentageOfValue(temp[3],3)) giraIzquierda();
         else giraDerecha();
+        
+        if(vals[0]==_negro && vals[4]==_negro && vals[2]==_negro){
+          while(true){paro();}
+        }
         /*
         *
         *Si vas a detectar gris o estados especiales, hazlo aqui. No preguntes porque.
         *
-        */
-        
-        
-        
+        */ 
+        int calculoDeDiferencia = (getPorcentageOfValue(temp[1],1)-getPorcentageOfValue(temp[3],3));
+        if(calculoDeDiferencia < 0)calculoDeDiferencia*=-1;
+        if((getPorcentageOfValue(temp[1],1)/10)>calculoDeDiferencia){
+          /*
+          *
+          *Hacer aqui la deteccion de color lateral
+          *
+          */
+          
+          if(temp[0]<gris[0] || temp[4]<gris[4]){
+            //gira hacia el color gris hasta encontrar negro
+            //regresa al caminosi no paso de gris marca el camino
+            
+            if(temp[0]<gris[0]){
+              //El derecho
+              while(temp[0]<gris[0] && temp[0]>negro[0]){
+                leerValores();
+                giraDerecha();
+              }
+              if(temp[0] <= negro[0]){
+                direccion = _derecha;
+                message = _derecha;
+                lcd.clear();
+              }
+              while(temp[1]>negro[1]){
+                leerValores();
+                giraIzquierda();
+                if(direccion == _derecha){
+                  if(temp[0]>gris[0]){
+                      direccion = _avanza;
+                      message = _avanza;
+                  }
+                }
+                
+              }
+            }else{
+              //El izquierdo
+              while(temp[4]<gris[4] && temp[4]>negro[4]){
+                leerValores();
+                giraIzquierda();
+              }
+              if(temp[4] <= negro[4]){
+                direccion = _izquierda;
+                message = _izquierda;
+                lcd.clear();
+              }
+              while(temp[3]>negro[3]){
+                leerValores();
+                giraDerecha();
+                if(direccion == _izquierda){
+                  if(temp[4]>gris[4]){
+                      direccion = _avanza;
+                      message = _avanza;
+                  }
+                }
+              }
+              
+            }
+          }
+          
+        }
         
       }
       else{
-        if(vals[3]==_blanco){//gira derecha especial
-          giraDerechaEspecial();
-        }
-        else{
-          if(vals[0]==_blanco){//gira Izquierda Especial
-             giraIzquierdaEspecial();
-          }
-        }
+        if(vals[1]==_blanco &&  vals[3]==_blanco){
+          if(getPorcentageOfValue(temp[1],1)<getPorcentageOfValue(temp[3],3)) giraDerecha();
+          else giraIzquierda();
+         }else{
+            if(vals[3]==_blanco){//gira derecha especial
+              giraDerechaEspecial();
+            }
+            else{
+              if(vals[0]==_blanco){//gira Izquierda Especial
+                 giraIzquierdaEspecial();
+              }
+            }
+         }
       }
       
       

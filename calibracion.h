@@ -174,46 +174,4 @@ void programaPruebaCalibracion(){
   }
 }
 
-void printAllValuesAtLCD(){
-    lcd.setCursor(0,0);
-    int analog = analogRead(s0);
-    int val = getColorOfValue(analog, 0);
-    lcd.write("1");
-    lcd.write(val);
-    val = getPorcentageOfValue(analog, 0);
-    lcd.print(val);
-    lcd.write(" ");
-    
-    analog = analogRead(s1);
-    val = getColorOfValue(analog, 1);
-    lcd.write("2");
-    lcd.write(val);
-    val = getPorcentageOfValue(analog, 1);
-    lcd.print(val);
-    lcd.write(" ");
-    
-    analog = analogRead(s2);
-    val = getColorOfValue(analog, 2);
-    lcd.write("3");
-    lcd.write(val);
-    val = getPorcentageOfValue(analog, 2);
-    lcd.print(val);
-    lcd.write(" ");
-    
-    analog = analogRead(s3);
-    val = getColorOfValue(analog, 3);
-    lcd.setCursor(0,1);
-    lcd.write("4");
-    lcd.write(val);
-    val = getPorcentageOfValue(analog, 3);
-    lcd.print(val);
-    lcd.write(" ");
-    
-    analog = analogRead(s4);
-    val = getColorOfValue(analog, 4);
-    lcd.write("5");
-    lcd.write(val);
-    val = getPorcentageOfValue(analog, 4);
-    lcd.print(val);
-    lcd.write(" ");
-    }
+
