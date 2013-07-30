@@ -1,9 +1,3 @@
-const int motorDer0 = 10;
-const int motorDer1 = 11;
-const int motorIzq0 = 12;
-const int motorIzq1 = 13;
-const int pwm = 9;
-
 void setVelocidad(int porcentaje){
   int val = map(porcentaje,100,0,0,255);
   analogWrite(pwm,val);

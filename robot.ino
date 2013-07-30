@@ -1,3 +1,9 @@
+//estos estan aqui por que es la declaracion de pines
+const int pwm = 9;
+const int motorDer0 = 10;
+const int motorDer1 = 11;
+const int motorIzq0 = 12;
+const int motorIzq1 = 13;
 const int selectorPrograma = 6;
 const int siguienteEstado = 7;
 const int selectorColor = 8;
@@ -16,7 +22,12 @@ const int s4 = A4;
  * LCD D7 pin to digital pin 3
 **/
 
-unsigned int temp[5], negro[5],gris[5],verde[5],rojo[5],blanco[5];
+unsigned int temp[5],
+			 negro[5],
+			 gris[5],
+			 verde[5],
+			 rojo[5],
+			 blanco[5];
 
 #define _negro	'N'
 #define _verde	'V'
@@ -40,16 +51,12 @@ LiquidCrystal lcd(4, 5, 0, 1, 2, 3);
 int vals[5] = {0,0,0,0,0};
 
 void leerValores(){
-      int analog = analogRead(s0);
-      vals[0] = getColorOfValue(analog, 0);
-      analog = analogRead(s1);
-      vals[1] = getColorOfValue(analog, 1);
-      analog = analogRead(s2);
-      vals[2] = getColorOfValue(analog, 2);
-      analog = analogRead(s3);
-      vals[3] = getColorOfValue(analog, 3);
-      analog = analogRead(s4);
-      vals[4] = getColorOfValue(analog, 4);
+      leerValor();
+      vals[0] = getColorOfValue(temp[0], 0);
+      vals[1] = getColorOfValue(temp[1], 1);
+      vals[2] = getColorOfValue(temp[2], 2);
+      vals[3] = getColorOfValue(temp[3], 3);
+      vals[4] = getColorOfValue(temp[4], 4);
 }
 void programaSiguePista(){
     cargaColores();   
