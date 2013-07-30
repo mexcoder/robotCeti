@@ -44,7 +44,6 @@ LiquidCrystal lcd(4, 5, 0, 1, 2, 3);
 #include "funcionEEPROM.h"
 #include "adc.h"
 #include "calibracion.h"
-#include "colores.h"
 
 int vals[5] = {0,0,0,0,0};
 
@@ -92,11 +91,13 @@ void programaSiguePista(){
         setVelocidad(30);
         avanza();
         int lineaCentro = getColorOfValue(capturaUnColor(2),2);
-        if(lineaCentro == _verde){ 
+        if(lineaCentro == _verde){
+          lcd.setCursor(0,0);
           lcd.write("Verde 60% Porciento");
           vel = 60;
         }
-        if(lineaCentro == _rojo){ 
+        if(lineaCentro == _rojo){
+          lcd.setCursor(0,0); 
           lcd.write("Rojo 80% Porciento");          
           vel = 80;
         }
