@@ -7,12 +7,12 @@ void leerValor(){
    temp[3] = analogRead(s3);  
    temp[4] = analogRead(s4);
    
-   lcd.setCursor(0,1);
+/*   lcd.setCursor(0,1);
    lcd.print(temp[2]);
    lcd.write(" N:");
    lcd.print(negro[2]);
    lcd.write(".0");
-   
+   */
 }
 
 int getColorOfValue(int value, int pos){

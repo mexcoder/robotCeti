@@ -12,6 +12,15 @@ void capturaColor(){
 		leerValor();
 	}while(check == 1);
 }
+int capturaUnColor(int s){
+	int mayor=0;
+	while(true){
+          	leerValor();
+		if( temp[s] > mayor ) mayor = temp[s];
+		if( getColorOfValue(temp[s],s)==_negro)break;
+	}
+        return mayor;
+}
 void programaCalibraColores(){
         lcd.clear();
         lcd.write("Calibracion:");
@@ -155,12 +164,17 @@ void programaCalibraColores(){
 
 }
 
-
+void printAllValuesAtLCD();
 void programaPruebaCalibracion(){
   cargaColores();
   setVelocidad(25);
   while(true)
   {
+    printAllValuesAtLCD();
+  }
+}
+
+void printAllValuesAtLCD(){
     lcd.setCursor(0,0);
     int analog = analogRead(s0);
     int val = getColorOfValue(analog, 0);
@@ -202,6 +216,4 @@ void programaPruebaCalibracion(){
     val = getPorcentageOfValue(analog, 4);
     lcd.print(val);
     lcd.write(" ");
-  }
-}
-
+    }
