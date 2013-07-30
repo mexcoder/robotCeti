@@ -117,27 +117,25 @@ void programaSiguePista(){
       
       printAllValuesAtLCD();
       setVelocidad(vel);
+      
+      
+      
       if(vals[1]==_negro &&  vals[3]==_negro){
-        
         if(getPorcentageOfValue(temp[1],1)<getPorcentageOfValue(temp[3],3)) giraIzquierda();
         else giraDerecha();
         /*
         *
         *Si vas a detectar gris o estados especiales, hazlo aqui. No preguntes porque.
         *
-        */
-        
-        
-        
-        
+        */  
       }
       else{
         if(vals[3]==_blanco){//gira derecha especial
-          giraDerechaEspecial();
+          giraDerecha();
         }
         else{
           if(vals[0]==_blanco){//gira Izquierda Especial
-             giraIzquierdaEspecial();
+             giraIzquierda();
           }
         }
       }
