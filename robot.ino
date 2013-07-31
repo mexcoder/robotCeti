@@ -1,4 +1,4 @@
-
+int color;
 const int pwm = 9;
 const int motorDer0 = 10;
 const int motorDer1 = 11;
@@ -168,20 +168,25 @@ void programaSiguePista(){
           */
           switch(lado)
           {
-            case 1: if(selectorColor)
+            case 1: if(color!=0)
+                    {
                       giraCaminoDerecha();
+                    }
                     else
-                    giraCaminoDerecha();
-                      //girar a la izquierda
+                    {
+                      giraCaminoIzquierda();
+                    }
                     break;
-            case 2: if(selectorColor)
-                      giraCaminoDerecha();
-                      //girar a la izquierda
+            case 2: if(color!=0)
+                    {
+                      giraCaminoIzquierda();
+                    }
                     else
+                    {
                       giraCaminoDerecha();
-                      //girar a la derecha
+                    }
                     break;
-            default: giraCaminoDerecha();//AvanzaCaminoFrente();
+            default: AvanzaCaminoFrente();
           }
         }
         /*
@@ -356,14 +361,14 @@ void programaSiguePista(){
          }else{
             if(vals[3]==_blanco){//gira derecha especial
               giraDerechaEspecial();
-            if(vals[0]==_negro)
+            if(vals[0]==_negro)//este if lo agrego lic para que funcione el algoritmo para la deteccion de colores laterales
               temp1_2=true;
             }
             else{
               if(vals[0]==_blanco){//gira Izquierda Especial
                  giraIzquierdaEspecial();
-              if(vals[3]==_negro)
-                temp2_2=_negro;
+              if(vals[3]==_negro)//este if tambien es para la deteccion de colores laterales
+                temp2_2=true;
               }
             }
          }
@@ -399,7 +404,7 @@ void loop() {
   int programa = digitalRead(selectorPrograma);
   
   if(programa == 1){
-    int color = digitalRead(selectorColor);
+    color = digitalRead(selectorColor);
     if(color== 1) 
         programaCalibraColores(); //rojo
     else

@@ -122,16 +122,19 @@ void AvanzaCaminoFrente(){
          leerValores();
          giraDerecha();
      }
-     while(vals[4]==_negro){
-         leerValores();
-         avanza();
-     }
-     while(vals[4]==_negro){
-         leerValores();
-         giraDerechaAtras();
-     }
+//     while(vals[4]==_negro){
+//         leerValores();
+//         avanza();
+//     }
+//     while(vals[4]==_negro){
+//         leerValores();
+//         giraDerechaAtras();
+//     }
      
   }
-  void GiraCaminoIzquierda(){
-    
+  void giraCaminoIzquierda(){
+    while(vals[3]==_negro){
+         leerValores();
+         giraIzquierda();
+     }
   }
