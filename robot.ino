@@ -38,7 +38,7 @@ unsigned int errorNegro[5];
 #include <EEPROM.h>
 
 //inicializar lcd
-LiquidCrystal lcd(4, 5, 0, 1, 2, 3);  
+LiquidCrystal lcd(4, 5, 3, 2, 1, 0);  
 
 #include "motor.h"
 #include "funcionEEPROM.h"
@@ -166,7 +166,23 @@ void programaSiguePista(){
           *    -Toda bifurcacion existente cae aqui
           *
           */
-          cruzaCalle();
+          switch(lado)
+          {
+            case 1: if(selectorColor)
+                      giraCaminoDerecha();
+                    else
+                    giraCaminoDerecha();
+                      //girar a la izquierda
+                    break;
+            case 2: if(selectorColor)
+                      giraCaminoDerecha();
+                      //girar a la izquierda
+                    else
+                      giraCaminoDerecha();
+                      //girar a la derecha
+                    break;
+            default: giraCaminoDerecha();//AvanzaCaminoFrente();
+          }
         }
         /*
         *
@@ -200,8 +216,7 @@ void programaSiguePista(){
                     temp1_2=false;
                     if(temp1)
                     {
-                      lcd.clear();
-                      message=_derecha;
+                      lado=1;
                       setVelocidad(vel);
                       //El derecho
                       /*while(temp[0]<gris[0] && temp[0]>negro[0]){
@@ -246,8 +261,8 @@ void programaSiguePista(){
                     temp2_2=false;
                     if(temp2)
                     {
-                      lcd.clear();
-                      message=_izquierda;
+                      lado=2;
+                      setVelocidad(vel);
                       //El izquierdo
                       /*  while(temp[4]<gris[4] && temp[4]>negro[4]){
                           leerValores();
@@ -268,8 +283,6 @@ void programaSiguePista(){
                             }
                           }
                         }*/
-                        
-                      setVelocidad(vel);
                     }
                   }
                 }

@@ -1,6 +1,6 @@
 int vals[5] = {0,0,0,0,0};
 int vel;
-void cruzaCalle(){
+void AvanzaCaminoFrente(){
         lcd.clear();
         lcd.write("A Cruzar calles!");  
         
@@ -55,23 +55,23 @@ void cruzaCalle(){
         }else{ 
           lcd.setCursor(0,1);
             lcd.write("6");  
-        
+        if(vals[0]==_negro){
           while(vals[0]==_negro){
             leerValores();
             setVelocidad(40);
-            giraIzquierdaEspecial();
+            giraIzquierda();//Especial
           }
           lcd.setCursor(0,1);
             lcd.write("7");  
-        
+        }else{
           while(vals[4]==_negro){
             leerValores();
             setVelocidad(40);
-            giraDerechaEspecial();
+            giraDerecha();//Especial
           }
           lcd.setCursor(0,1);
             lcd.write("8");  
-        
+          }
         }
         lcd.setCursor(0,1);
             lcd.write("9");  
@@ -100,7 +100,7 @@ void cruzaCalle(){
         lcd.setCursor(0,1);
             lcd.write("12");  
         
-        while(vals[0]==_negro || vals[4]==_negro){
+        while(vals[0]==_negro && vals[4]==_negro){
           leerValores();
           setVelocidad(vel);
           avanza();
@@ -113,4 +113,25 @@ void cruzaCalle(){
         while(true){paro();}
         
         }
-  
+  void giraCaminoDerecha(){
+     /*while(vals[4]==_negro){
+          leerValores();
+          giraDerecha();
+     }*/
+     while(vals[0]==_negro){
+         leerValores();
+         giraDerecha();
+     }
+     while(vals[4]==_negro){
+         leerValores();
+         avanza();
+     }
+     while(vals[4]==_negro){
+         leerValores();
+         giraDerechaAtras();
+     }
+     
+  }
+  void GiraCaminoIzquierda(){
+    
+  }
