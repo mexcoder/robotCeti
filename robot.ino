@@ -156,10 +156,14 @@ void programaSiguePista(){
       }
       setVelocidad(vel);
       if(vals[1]==_negro &&  vals[3]==_negro){
-        
+        int por = getPorcentageOfValue(temp[1],1)-getPorcentageOfValue(temp[3],3);
+        if(por<0) por*=-1;
+       if(por<10){
+         avanza();
+       }else{ 
         if(getPorcentageOfValue(temp[1],1)<getPorcentageOfValue(temp[3],3)) giraIzquierda();
         else giraDerecha();
-        
+      }
         if(vals[0]==_negro && vals[4]==_negro && vals[2]==_negro){
           /*
           *
@@ -203,7 +207,7 @@ void programaSiguePista(){
                     lado=0;
                     message=_avanza;
                     break;
-            default: AvanzaCaminoFrente();
+                    
           }
         }
         /*
@@ -232,8 +236,27 @@ void programaSiguePista(){
                 {
                   if(vals[0]==_gris&&!temp1_2)
                   {
+                   // /*
+                    giraDerecha();  
+                    while(temp[0] > negro[0]-(errorNegro[0]/2))
+                      {
+                        leerValor();
+                      }
                       setVelocidad(25);
-                      temp1=true;
+                      giraIzquierda();
+                      while(temp[0]<(negro[0]+errorNegro[0])){
+                        leerValorMostrandoEnLCD();
+                      }
+                      if(getColorOfValue(capturaUnColor(0),0)==_gris){//*/
+                        temp1=true;  
+                      ///*
+                    }else temp1_2=true;
+                       while(temp[0] > negro[0]-(errorNegro[0]/2))
+                       {
+                         leerValores();
+                         giraDerecha();
+                       }
+                       setVelocidad(vel);//*/
                   }else{
                     temp1_2=false;
                     if(temp1&&lado==0)
@@ -259,8 +282,25 @@ void programaSiguePista(){
                 {
                   if(vals[4]==_gris&&!temp2_2)
                   {
-                     temp2=true;
+                     /*while(temp[i] > negro[i]-(errorNegro[i]/2))
+                      {
+                        leerValor();
+                        giraIzquierda();
+                      }
                       setVelocidad(25);
+                      giraDerecha();
+                      while(temp[4]<(negro[4]+errorNegro[4])){
+                        leerValorMostrandoEnLCD();
+                      }
+                      if(getColorOfValue(capturaUnColor(4),4)==_gris){*/
+                        temp2=true;  
+                     /* }else temp2_2=true;
+                       while(temp[4]  negro[4]+(errorNegro[4]))
+                       {
+                         leerValores();
+                         giraIzquierda();
+                       }
+                       setVelocidad(vel);*/
                   }else{
                     temp2_2=false;
                     if(temp2&&lado==0)
