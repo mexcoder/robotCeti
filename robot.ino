@@ -44,8 +44,9 @@ LiquidCrystal lcd(4, 5, 0, 1, 2, 3);
 #include "funcionEEPROM.h"
 #include "adc.h"
 #include "calibracion.h"
+#include "Giros.h"
 
-int vals[5] = {0,0,0,0,0};
+
 
 void leerValores(){
       leerValor();
@@ -77,7 +78,7 @@ void programaSiguePista(){
       val = digitalRead(siguienteEstado);
     }
     while(val == LOW);
-    int vel = 100;
+    vel = 100;
  
     #define _derecha 1
     #define _izquierda 2
@@ -88,6 +89,8 @@ void programaSiguePista(){
     /*Variables Lic*/
     int lado=0;
     boolean temp1=false;
+    boolean temp1_2=false;
+    boolean temp2_2=false;
     boolean temp2=false;
     ///////////////////////
     lcd.clear();
@@ -157,7 +160,13 @@ void programaSiguePista(){
         else giraDerecha();
         
         if(vals[0]==_negro && vals[4]==_negro && vals[2]==_negro){
-          while(true){paro();}
+          /*
+          *
+          * Este es el segmento de bifurcaciones:
+          *    -Toda bifurcacion existente cae aqui
+          *
+          */
+          cruzaCalle();
         }
         /*
         *
@@ -179,14 +188,16 @@ void programaSiguePista(){
                 {
                   temp1=false;
                   setVelocidad(vel);
+                  temp1_2=true;
                 }
                 else
                 {
-                  if(vals[0]==_gris)
+                  if(vals[0]==_gris&&!temp1_2)
                   {
-                    setVelocidad(25);
-                    temp1=true;
+                      setVelocidad(25);
+                      temp1=true;
                   }else{
+                    temp1_2=false;
                     if(temp1)
                     {
                       lcd.clear();
@@ -223,14 +234,16 @@ void programaSiguePista(){
                 {
                   temp2=false;
                   setVelocidad(vel);
+                  temp2_2=true;
                 }
                 else
                 {
-                  if(vals[4]==_gris)
+                  if(vals[4]==_gris&&!temp2_2)
                   {
-                    temp2=true;
-                    setVelocidad(25);
+                     temp2=true;
+                      setVelocidad(25);
                   }else{
+                    temp2_2=false;
                     if(temp2)
                     {
                       lcd.clear();
@@ -330,10 +343,14 @@ void programaSiguePista(){
          }else{
             if(vals[3]==_blanco){//gira derecha especial
               giraDerechaEspecial();
+            if(vals[0]==_negro)
+              temp1_2=true;
             }
             else{
               if(vals[0]==_blanco){//gira Izquierda Especial
                  giraIzquierdaEspecial();
+              if(vals[3]==_negro)
+                temp2_2=_negro;
               }
             }
          }

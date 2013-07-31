@@ -38,6 +38,26 @@ void giraIzquierda(){
   
 }
 
+void giraIzquierdaAtras(){
+  //PARAR EL MOTOR PARA QUE EL OTRO SIGA GIRANDO
+  digitalWrite(motorDer0,LOW);  
+  digitalWrite(motorDer1,LOW);
+  digitalWrite(motorIzq0,HIGH);  
+  digitalWrite(motorIzq1,LOW);
+}
+
+void giraDerechaAtras(){
+
+  digitalWrite(motorDer0,HIGH);  
+  digitalWrite(motorDer1,LOW);
+  //PARAR EL MOTOR PARA QUE EL OTRO SIGA GIRANDO
+  digitalWrite(motorIzq0,LOW);  
+  digitalWrite(motorIzq1,LOW);
+  
+}
+
+
+
 void giraDerechaEspecial(){
     //girar el motor hacia atras para que de una vuelta mas cerrada
   digitalWrite(motorDer0,HIGH);  
