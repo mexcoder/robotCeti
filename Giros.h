@@ -110,7 +110,7 @@ void AvanzaCaminoFrente(){
         
         lcd.clear();
         lcd.write("Aprendi a cruzar");
-        while(true){paro();}
+        //while(true){paro();}
         
         }
   void giraCaminoDerecha(){
@@ -118,6 +118,9 @@ void AvanzaCaminoFrente(){
           leerValores();
           giraDerecha();
      }*/
+//     lcd.clear();
+     //lcd.write("Girando A la Derecha");
+        
      while(vals[0]==_negro){
          leerValores();
          giraDerecha();
@@ -133,6 +136,8 @@ void AvanzaCaminoFrente(){
      
   }
   void giraCaminoIzquierda(){
+//    lcd.clear();
+    //lcd.write("Girando A la Izquierda");
     while(vals[3]==_negro){
          leerValores();
          giraIzquierda();

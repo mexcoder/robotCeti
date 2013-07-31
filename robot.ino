@@ -135,6 +135,7 @@ void programaSiguePista(){
         
         
       }
+      /////Segmento para pruebas
       lcd.setCursor(0,0);
       switch (message){
         case 60:
@@ -144,10 +145,10 @@ void programaSiguePista(){
             lcd.write("Velocidad 80%");
         break;
         case _izquierda:
-            lcd.write("Vuelta a La Izquierda :D");
+            lcd.write("Gris a La Izquierda :D");
         break;
         case _derecha:
-            lcd.write("Vuelta a La Derecha D:");
+            lcd.write("Gris a La Derecha D:");
         break;
         default:
             printAllValuesAtLCD();
@@ -171,32 +172,48 @@ void programaSiguePista(){
             case 1: if(color!=0)
                     {
                       giraCaminoDerecha();
+                      temp2_2=true;
+                      temp1_2=true;
+                      temp1=false;
                     }
                     else
                     {
                       giraCaminoIzquierda();
+                      temp1_2=true;
+                      temp2_2=true;
+                      temp1=false;
                     }
+                    lado=0;
+                    message = _avanza;
                     break;
             case 2: if(color!=0)
                     {
                       giraCaminoIzquierda();
+                      temp2_2=true;
+                      temp1_2=true;
+                      temp2=false;
                     }
                     else
                     {
                       giraCaminoDerecha();
+                      temp2_2=true;
+                      temp1_2=true;
+                      temp2=false;
                     }
+                    lado=0;
+                    message=_avanza;
                     break;
             default: AvanzaCaminoFrente();
           }
         }
         /*
         *
-        *Si vas a detectar gris o estados especiales, hazlo aqui. No preguntes porque.
+        *Si vas a detectar gris o estados especiales, hazlo aqui.
         *
         */ 
         int calculoDeDiferencia = (getPorcentageOfValue(temp[1],1)-getPorcentageOfValue(temp[3],3));
         if(calculoDeDiferencia < 0)calculoDeDiferencia*=-1;
-        if((getPorcentageOfValue(temp[1],1)*5/100)>calculoDeDiferencia){
+        if((getPorcentageOfValue(temp[1],1)*5/100)>calculoDeDiferencia && vals[0]!=_negro && vals[4]!=_negro){
           /*
           *
           *Hacer aqui la deteccion de color lateral
@@ -219,31 +236,13 @@ void programaSiguePista(){
                       temp1=true;
                   }else{
                     temp1_2=false;
-                    if(temp1)
+                    if(temp1&&lado==0)
                     {
+                      temp1=false;
                       lado=1;
+                      lcd.clear();
+                      message = _derecha;
                       setVelocidad(vel);
-                      //El derecho
-                      /*while(temp[0]<gris[0] && temp[0]>negro[0]){
-                        leerValores();
-                        giraDerecha();
-                      }
-                      if(temp[0] <= negro[0]){
-                        direccion = _derecha;
-                        message = _derecha;
-                        lcd.clear();
-                      }
-                      while(temp[1]>negro[1]){
-                        leerValores();
-                        giraIzquierda();
-                        if(direccion == _derecha){
-                          if(temp[0]>gris[0]){
-                              direccion = _avanza;
-                              message = _avanza;
-                          }
-                        }
-                        
-                      }*/
                     }
                   }
                 }
@@ -264,93 +263,17 @@ void programaSiguePista(){
                       setVelocidad(25);
                   }else{
                     temp2_2=false;
-                    if(temp2)
+                    if(temp2&&lado==0)
                     {
                       lado=2;
+                      temp2=false;
+                      lcd.clear();
+                      message = _izquierda;
                       setVelocidad(vel);
-                      //El izquierdo
-                      /*  while(temp[4]<gris[4] && temp[4]>negro[4]){
-                          leerValores();
-                          giraIzquierda();
-                        }
-                        if(temp[4] <= negro[4]){
-                          direccion = _izquierda;
-                          message = _izquierda;
-                          lcd.clear();
-                        }
-                        while(temp[3]>negro[3]){
-                          leerValores();
-                          giraDerecha();
-                          if(direccion == _izquierda){
-                            if(temp[4]>gris[4]){
-                                direccion = _avanza;
-                                message = _avanza;
-                            }
-                          }
-                        }*/
                     }
                   }
                 }
               }
-          
-          
-          
-          
-          
-          
-          
-          /*
-          if(temp[0]<gris[0] || temp[4]<gris[4]){
-            //gira hacia el color gris hasta encontrar negro
-            //regresa al caminosi no paso de gris marca el camino
-            
-            if(temp[0]<gris[0]){
-              //El derecho
-              while(temp[0]<gris[0] && temp[0]>negro[0]){
-                leerValores();
-                giraDerecha();
-              }
-              if(temp[0] <= negro[0]){
-                direccion = _derecha;
-                message = _derecha;
-                lcd.clear();
-              }
-              while(temp[1]>negro[1]){
-                leerValores();
-                giraIzquierda();
-                if(direccion == _derecha){
-                  if(temp[0]>gris[0]){
-                      direccion = _avanza;
-                      message = _avanza;
-                  }
-                }
-                
-              }
-            }else{
-              //El izquierdo
-              while(temp[4]<gris[4] && temp[4]>negro[4]){
-                leerValores();
-                giraIzquierda();
-              }
-              if(temp[4] <= negro[4]){
-                direccion = _izquierda;
-                message = _izquierda;
-                lcd.clear();
-              }
-              while(temp[3]>negro[3]){
-                leerValores();
-                giraDerecha();
-                if(direccion == _izquierda){
-                  if(temp[4]>gris[4]){
-                      direccion = _avanza;
-                      message = _avanza;
-                  }
-                }
-              }
-              
-            }
-          }
-          */
         }
         
       }
